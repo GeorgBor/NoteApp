@@ -6,19 +6,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import at.ac.fhcampuswien.mvvmdemo.models.Note
+import androidx.lifecycle.viewmodel.compose.viewModel
+import at.ac.fhcampuswien.mvvmdemo.viewmodels.NoteViewModel
 import at.ac.fhcampuswien.mvvmdemo.widgets.AddNoteWidget
 import at.ac.fhcampuswien.mvvmdemo.widgets.NoteCards
 
 @Preview(showBackground = true)
 @Composable
-fun AddNoteScreen(){
+fun AddNoteScreen(viewModel: NoteViewModel = viewModel()){
+
     Column(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
@@ -26,12 +26,8 @@ fun AddNoteScreen(){
         horizontalAlignment = Alignment.CenterHorizontally
     ){
 
-        var notes = remember {
-            mutableStateListOf<Note>()
-        }
-
         AddNoteWidget(onSaveNote = { note ->
-            notes.add(note)
+            viewModel.addNote(note)
         })
 
         Divider()
@@ -44,6 +40,6 @@ fun AddNoteScreen(){
 
          */
 
-        NoteCards(notes = notes)
+        NoteCards(notes = viewModel.getAllNotes())
     }
 }

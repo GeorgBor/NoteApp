@@ -61,7 +61,9 @@ fun NoteCards(notes: List<Note> = listOf()){
 }
 
 @Composable
-fun AddNoteWidget(){
+fun AddNoteWidget(
+    onSaveNote: (Note) -> Unit = {}
+){
     Text(text = "Add a Note",
         style = MaterialTheme.typography.h5,
         color = MaterialTheme.colors.primaryVariant)
@@ -77,11 +79,15 @@ fun AddNoteWidget(){
     Button(
         modifier = Modifier.padding(16.dp),
         onClick = {
-            val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
-            val currentDate = sdf.format(Date())
-            val newNote = Note(text, currentDate)
+            if(text.isNotEmpty()){
+                val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
+                val currentDate = sdf.format(Date())
+                val newNote = Note(text, currentDate)
 
-            Log.d("AddNoteScreen", "added ${newNote.text} ${newNote.date}")
+                Log.d("AddNoteScreen", "added ${newNote.text} ${newNote.date}")
+                onSaveNote(newNote)
+                text = ""
+            }
         }) {
 
         Text( text = "Save")

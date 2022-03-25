@@ -1,6 +1,5 @@
 package at.ac.fhcampuswien.mvvmdemo.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -8,15 +7,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import at.ac.fhcampuswien.mvvmdemo.models.Note
+import androidx.lifecycle.viewmodel.compose.viewModel
+import at.ac.fhcampuswien.mvvmdemo.viewmodels.NoteViewModel
 import at.ac.fhcampuswien.mvvmdemo.widgets.AddNoteWidget
 import at.ac.fhcampuswien.mvvmdemo.widgets.NoteCards
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Preview(showBackground = true)
 @Composable
-fun AddNoteScreen(){
+fun AddNoteScreen(viewModel: NoteViewModel = viewModel()){
     Column(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
@@ -24,15 +22,16 @@ fun AddNoteScreen(){
         horizontalAlignment = Alignment.CenterHorizontally
     ){
 
-        AddNoteWidget()
+        AddNoteWidget{ note ->
+            viewModel.addNote(note)
+        }
 
         Divider()
 
-        val notes = listOf(
-            Note("Buy Groceries", "23.03.2022 10:00"),
-            Note("Lorem Ipsum", "24.03.2022 11:32"),
-        )
-
-        NoteCards(notes = notes)
+        NoteCards(
+            notes = viewModel.getAllNotes()
+        ) { note ->
+            viewModel.removeNote(note)
+        }
     }
 }

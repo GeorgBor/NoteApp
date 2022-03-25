@@ -6,11 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import at.ac.fhcampuswien.mvvmdemo.models.Note
+import at.ac.fhcampuswien.mvvmdemo.viewmodels.NoteViewModel
 import at.ac.fhcampuswien.mvvmdemo.widgets.NoteCards
 
 @Composable
-fun HomeScreen(){
+fun HomeScreen(viewModel: NoteViewModel = viewModel()){
     Column(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight(),
@@ -20,11 +22,18 @@ fun HomeScreen(){
             modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
             style = MaterialTheme.typography.h5)
 
+        /*
         val notes = listOf(
             Note("Buy Groceries", "23.03.2022 10:00"),
             Note("Lorem Ipsum", "24.03.2022 11:32"),
         )
 
-        NoteCards(notes = notes)
+         */
+
+        NoteCards(
+            notes = viewModel.getAllNotes()
+        ){ note ->
+            viewModel.removeNote(note)
+        }
     }
 }

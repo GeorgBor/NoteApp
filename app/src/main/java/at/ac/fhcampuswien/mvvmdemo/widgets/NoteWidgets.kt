@@ -18,7 +18,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun NoteCard(note: Note){
+fun NoteCard(
+    note: Note,
+    onDeleteClick: (Note) -> Unit = {}
+){
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -38,7 +41,9 @@ fun NoteCard(note: Note){
                     style = MaterialTheme.typography.caption
                 )
 
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = {
+                    onDeleteClick(note)
+                }) {
                     Icon(imageVector = Icons.Default.Delete, contentDescription = "remove note")
                 }
             }
@@ -52,16 +57,23 @@ fun NoteCard(note: Note){
 }
 
 @Composable
-fun NoteCards(notes: List<Note> = listOf()){
+fun NoteCards(
+    notes: List<Note> = listOf(),
+    onDeleteClick: (Note) -> Unit = {}
+){
     LazyColumn {
         items(notes) { note ->
-            NoteCard(note)
+            NoteCard(note) { note ->
+                onDeleteClick(note)
+            }
         }
     }
 }
 
 @Composable
-fun AddNoteWidget(){
+fun AddNoteWidget(
+    onSaveClick: (Note) -> Unit = {}
+){
     Text(text = "Add a Note",
         style = MaterialTheme.typography.h5,
         color = MaterialTheme.colors.primaryVariant)
@@ -77,11 +89,18 @@ fun AddNoteWidget(){
     Button(
         modifier = Modifier.padding(16.dp),
         onClick = {
-            val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm")
-            val currentDate = sdf.format(Date())
-            val newNote = Note(text, currentDate)
+            if(text.isNotEmpty()){
+                val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY)
+                val currentDate = sdf.format(Date())
+                val newNote = Note(text, currentDate)
 
-            Log.d("AddNoteScreen", "added ${newNote.text} ${newNote.date}")
+                Log.d("AddNoteScreen", "added ${newNote.text} ${newNote.date}")
+
+                onSaveClick(newNote)
+
+                text = ""
+            }
+
         }) {
 
         Text( text = "Save")

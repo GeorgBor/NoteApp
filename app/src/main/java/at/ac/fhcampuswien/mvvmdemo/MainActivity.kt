@@ -16,10 +16,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import at.ac.fhcampuswien.mvvmdemo.navigation.AppNavigation
 import at.ac.fhcampuswien.mvvmdemo.ui.theme.MVVMDemoTheme
+import at.ac.fhcampuswien.mvvmdemo.viewmodels.NoteViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

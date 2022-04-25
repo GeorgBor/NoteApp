@@ -31,7 +31,7 @@ fun HomeScreen(viewModel: NoteViewModel = viewModel()){
          */
 
         NoteCards(
-            notes = viewModel.getAllNotes()
+            notes = viewModel.notes.value
         ){ note ->
             viewModel.removeNote(note)
         }

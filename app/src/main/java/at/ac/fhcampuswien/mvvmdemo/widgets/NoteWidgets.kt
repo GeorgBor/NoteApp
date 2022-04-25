@@ -63,8 +63,8 @@ fun NoteCards(
 ){
     LazyColumn {
         items(notes) { note ->
-            NoteCard(note) { note ->
-                onDeleteClick(note)
+            NoteCard(note) { noteToDelete ->
+                onDeleteClick(noteToDelete)
             }
         }
     }
@@ -92,7 +92,7 @@ fun AddNoteWidget(
             if(text.isNotEmpty()){
                 val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY)
                 val currentDate = sdf.format(Date())
-                val newNote = Note(text, currentDate)
+                val newNote = Note(text = text, date = currentDate)
 
                 Log.d("AddNoteScreen", "added ${newNote.text} ${newNote.date}")
 

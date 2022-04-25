@@ -8,9 +8,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import at.ac.fhcampuswien.mvvmdemo.models.Note
 import at.ac.fhcampuswien.mvvmdemo.viewmodels.NoteViewModel
 import at.ac.fhcampuswien.mvvmdemo.widgets.AddNoteWidget
 import at.ac.fhcampuswien.mvvmdemo.widgets.NoteCards
+import kotlinx.coroutines.flow.toList
 
 @Preview(showBackground = true)
 @Composable
@@ -28,8 +30,10 @@ fun AddNoteScreen(viewModel: NoteViewModel = viewModel()){
 
         Divider()
 
+        val notes: List<Note> by viewModel.notes.collectAsState()   // notes must be collected to be updated
+
         NoteCards(
-            notes = viewModel.getAllNotes()
+            notes = notes
         ) { note ->
             viewModel.removeNote(note)
         }

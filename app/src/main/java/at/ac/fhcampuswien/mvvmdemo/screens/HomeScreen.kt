@@ -3,6 +3,8 @@ package at.ac.fhcampuswien.mvvmdemo.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -30,8 +32,10 @@ fun HomeScreen(viewModel: NoteViewModel = viewModel()){
 
          */
 
+        val notes: List<Note> by viewModel.notes.collectAsState()
+
         NoteCards(
-            notes = viewModel.getAllNotes()
+            notes = notes
         ){ note ->
             viewModel.removeNote(note)
         }

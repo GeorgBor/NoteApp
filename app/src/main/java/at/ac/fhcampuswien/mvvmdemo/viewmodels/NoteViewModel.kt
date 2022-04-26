@@ -1,31 +1,55 @@
 package at.ac.fhcampuswien.mvvmdemo.viewmodels
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import at.ac.fhcampuswien.mvvmdemo.models.Note
+import at.ac.fhcampuswien.mvvmdemo.repositories.NoteRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-class NoteViewModel : ViewModel() {
-    private var notes = mutableStateListOf<Note>()
+class NoteViewModel(
+    private val repository: NoteRepository
+) : ViewModel() {
+    //private var notes = mutableStateListOf<Note>()
+    private var _notes = MutableStateFlow<List<Note>>(emptyList())
+    val notes = _notes.asStateFlow()
 
     init {
-        notes.addAll(
-            listOf(
-                Note("Buy Groceries", "23.03.2022 10:00"),
-                Note("Do workout", "24.03.2022 11:32"),
-            )
-        )
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.getAllNotes().collect{ listOfNotes ->
+                if(listOfNotes.isNullOrEmpty()){
+                    //
+                    Log.d("NoteViewModel", "No notes")
+                } else {
+                    _notes.value = listOfNotes
+                }
+            }
+        }
     }
 
     fun addNote(note: Note){
-        notes.add(note)
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.addNote(note = note)
+        }
+
+
     }
 
     fun removeNote(note: Note){
-        notes.remove(note)
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteNote(note)
+        }
     }
 
-    fun getAllNotes(): List<Note>{
-        return notes
+    fun editNote(note: Note){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.editNote(note = note)
+        }
     }
 
     fun sortNotes(){

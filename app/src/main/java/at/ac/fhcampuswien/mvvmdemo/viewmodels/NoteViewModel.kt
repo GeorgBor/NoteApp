@@ -31,15 +31,6 @@ class NoteViewModel(
                     }
                 }
         }
-        /*
-        notes.addAll(
-            listOf(
-                Note(text = "Buy Groceries", date = "23.03.2022 10:00"),
-                Note(text ="Do workout", date = "24.03.2022 11:32"),
-            )
-        )
-
-         */
     }
 
     fun addNote(note: Note){
@@ -47,17 +38,9 @@ class NoteViewModel(
         viewModelScope.launch {
             repository.addNote(note = note)
         }
-        // notes.add(note)
     }
 
     fun removeNote(note: Note) = viewModelScope.launch { repository.deleteNote(note = note) }
-
-    /*
-    fun getAllNotes(): List<Note>{
-        return notes
-    }
-
-     */
 
     fun editNote(note: Note) = viewModelScope.launch { repository.editNote(note = note) }
 

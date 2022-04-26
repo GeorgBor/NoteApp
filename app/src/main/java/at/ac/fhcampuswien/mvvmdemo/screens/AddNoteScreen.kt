@@ -12,6 +12,7 @@ import at.ac.fhcampuswien.mvvmdemo.models.Note
 import at.ac.fhcampuswien.mvvmdemo.viewmodels.NoteViewModel
 import at.ac.fhcampuswien.mvvmdemo.widgets.AddNoteWidget
 import at.ac.fhcampuswien.mvvmdemo.widgets.NoteCards
+import kotlinx.coroutines.flow.toList
 
 @Preview(showBackground = true)
 @Composable
@@ -29,7 +30,7 @@ fun AddNoteScreen(viewModel: NoteViewModel = viewModel()){
 
         Divider()
 
-        val notes: List<Note> by viewModel.notes.collectAsState()
+        val notes: List<Note> by viewModel.notes.collectAsState()   // notes must be collected to be updated
 
         NoteCards(
             notes = notes

@@ -17,14 +17,10 @@ import at.ac.fhcampuswien.mvvmdemo.viewmodels.NoteViewModelFactory
 
 @Composable
 fun AppNavigation(navController: NavHostController = rememberNavController()){
-    //
     val context = LocalContext.current
     val db = NotesDB.getDatabase(context = context)
     val repository = NoteRepository(dao = db.notesDao())
-
-    val noteViewModel: NoteViewModel = viewModel(
-        factory = NoteViewModelFactory(repository = repository)
-    )
+    val noteViewModel: NoteViewModel = viewModel(factory = NoteViewModelFactory(repository = repository))
 
     NavHost(navController = navController, startDestination = "homescreen"){
         composable(route = "homescreen") { HomeScreen(viewModel = noteViewModel) }

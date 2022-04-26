@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NotesDao {
+    // suspend functions are functions that can be paused and resumed at a later time
+    // they can execute a long running operation without blocking, meaning they run in another thread
 
     @Insert
     suspend fun addNote(note: Note)

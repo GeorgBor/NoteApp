@@ -8,29 +8,30 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import at.ac.fhcampuswien.mvvmdemo.models.Note
 
 @Database(
-    entities = [Note::class], // add entities here
+    entities = [Note::class],
     version = 1,
     exportSchema = false
 )
-abstract class NotesDB: RoomDatabase(){
+abstract class NotesDB: RoomDatabase() {
     abstract fun notesDao(): NotesDao
 
     companion object {
+        @Volatile
         private var INSTANCE: NotesDB? = null
 
         fun getDatabase(context: Context): NotesDB {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: buildDatabase(context).also{
+            return INSTANCE ?: synchronized(this){
+                INSTANCE ?: buildDatabase(context).also {
                     INSTANCE = it
                 }
             }
         }
 
-        private fun buildDatabase(context: Context): NotesDB{
+        private fun buildDatabase(context: Context): NotesDB {
             return Room
-                .databaseBuilder(context, NotesDB::class.java, "note_database")
+                .databaseBuilder(context, NotesDB::class.java, "notes_database")
                 .addCallback(
-                    object : RoomDatabase.Callback(){
+                    object : RoomDatabase.Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
                             // do work on first db creation
@@ -45,7 +46,5 @@ abstract class NotesDB: RoomDatabase(){
                 .fallbackToDestructiveMigration()
                 .build()
         }
-
     }
-
 }
